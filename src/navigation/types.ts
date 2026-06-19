@@ -1,4 +1,5 @@
 export type RootStackParamList = {
+  Landing: undefined;
   Tabs: undefined;
   ProductDetail: { productId: string };
   Checkout: undefined;
