@@ -1,27 +1,45 @@
+// ─── CHANGE THIS ONE VALUE to retheme the whole app ───────────────────────────
+// noci's display color (used on SK Glypher text, option selectors, active states).
+// White and black are the only true constants.
+export const ACCENT = '#E04040';
+// ──────────────────────────────────────────────────────────────────────────────
+
 export const COLORS = {
-  green900: '#1A3A2A',
-  green700: '#2D6A4F',
-  green500: '#52B788',
-  green200: '#B7E4C7',
-  green100: '#D8F3DC',
-  green50: '#F0FBF4',
-
-  earth700: '#7B4F2E',
-  earth500: '#A0673A',
-  earth400: '#C8956C',
-  earth100: '#F5E6D8',
-
-  cream: '#FAF6EF',
-
-  gray600: '#4B5563',
-  gray400: '#9CA3AF',
-  gray200: '#E5E7EB',
-  gray100: '#F3F4F6',
-
+  // The two absolute constants
   white: '#FFFFFF',
-  black: '#111827',
+  black: '#1A1A1A',
 
-  warning: '#F59E0B',
-  error: '#EF4444',
-  success: '#10B981',
+  // Accent — always equals ACCENT above; referenced throughout the app
+  accent: ACCENT,
+  accentLight: '#FFF0F0', // very pale tint of accent for backgrounds/banners
+
+  // Neutral grays (no green, no earth tones)
+  darkGray: '#3D3D3D',
+  midGray: '#888888',
+  lightGray: '#C8C8C8',
+  xLightGray: '#EBEBEB',
+  offWhite: '#F8F8F8',
+
+  // Semantic aliases kept for backwards compatibility with existing components
+  green900: '#1A1A1A',
+  green700: ACCENT,       // accent color → headings, active states
+  green500: ACCENT,
+  green200: '#F5D5D5',    // pale accent tint
+  green100: '#FFF0F0',
+  green50: '#FFFFFF',
+
+  earth700: '#1A1A1A',    // black → CTA buttons ("Add to Cart", "Place Order")
+  earth500: '#3D3D3D',
+  earth400: '#888888',
+  earth100: '#F5F5F5',
+
+  cream: '#F8F8F8',
+  gray600: '#3D3D3D',
+  gray400: '#888888',
+  gray200: '#EBEBEB',
+  gray100: '#F5F5F5',
+
+  warning: ACCENT,
+  error: '#CC2200',
+  success: '#1A1A1A',
 } as const;

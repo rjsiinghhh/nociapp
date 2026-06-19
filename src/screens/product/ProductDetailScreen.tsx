@@ -31,7 +31,7 @@ export function ProductDetailScreen({ route, navigation }: Props) {
   if (!product) {
     return (
       <SafeAreaView style={styles.safe}>
-        <Text style={styles.notFound}>Product not found</Text>
+        <Text style={styles.notFound}>Product not found.</Text>
       </SafeAreaView>
     );
   }
@@ -45,66 +45,82 @@ export function ProductDetailScreen({ route, navigation }: Props) {
     navigation.goBack();
   };
 
-  const subtotal = (product.pricePerUnit * qty).toFixed(2);
-
   return (
     <SafeAreaView style={styles.safe}>
       <StatusBar barStyle="dark-content" />
 
+      {/* Nav */}
       <View style={styles.navBar}>
-        <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
           <Text style={styles.backIcon}>←</Text>
         </TouchableOpacity>
-        <Text style={styles.navTitle} numberOfLines={1}>{product.name}</Text>
-        <View style={{ width: 40 }} />
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false} style={styles.scroll}>
+        {/* Full-width product image */}
         <Image source={{ uri: product.imageUrl }} style={styles.image} resizeMode="cover" />
 
         <View style={styles.body}>
-          <Text style={styles.name}>{product.name}</Text>
-          <Text style={styles.origin}>From {product.farmOrigin}</Text>
+          {/* Two-column row: meta on left, big product name on right (mirrors noci.farm layout) */}
+          <View style={styles.topRow}>
+            <View style={styles.metaCol}>
+              <Text style={styles.metaLabel}>From</Text>
+              <Text style={styles.metaValue}>{product.farmOrigin}</Text>
 
-          <View style={styles.badgeRow}>
-            {product.badges.map((b) => (
-              <Badge key={b} type={b} />
-            ))}
+              <Text style={[styles.metaLabel, { marginTop: SPACING.md }]}>Unit</Text>
+              <Text style={styles.metaValue}>{product.unit}</Text>
+
+              {product.badges.length > 0 && (
+                <>
+                  <Text style={[styles.metaLabel, { marginTop: SPACING.md }]}>Tags</Text>
+                  <View style={styles.badges}>
+                    {product.badges.map((b) => <Badge key={b} type={b} />)}
+                  </View>
+                </>
+              )}
+            </View>
+
+            <View style={styles.nameCol}>
+              <Text style={styles.productName}>{product.name}</Text>
+            </View>
           </View>
 
+          {/* Description */}
           <Text style={styles.description}>{product.description}</Text>
 
+          {/* Low stock warning in accent color */}
           {product.stockCount !== undefined && product.stockCount <= 5 && product.inStock && (
-            <View style={styles.lowStockBanner}>
-              <Text style={styles.lowStockText}>
-                ⚡ Only {product.stockCount} left today
-              </Text>
-            </View>
+            <Text style={styles.lowStock}>Only {product.stockCount} left today.</Text>
           )}
 
           <View style={{ height: 120 }} />
         </View>
       </ScrollView>
 
+      {/* Sticky footer: price + qty + Add to Cart */}
       <View style={styles.footer}>
-        <View style={styles.footerLeft}>
+        <View style={styles.footerTop}>
           <Text style={styles.price}>${product.pricePerUnit.toFixed(2)}</Text>
           <Text style={styles.unit}>per {product.unit}</Text>
         </View>
 
-        <QuantitySelector
-          quantity={qty}
-          onIncrement={() => setQty((q) => q + 1)}
-          onDecrement={() => setQty((q) => Math.max(1, q - 1))}
-          min={1}
-          max={product.stockCount ?? 99}
-        />
-
-        <Button
-          label={`Add · $${subtotal}`}
-          onPress={handleAddToCart}
-          disabled={!product.inStock}
-        />
+        <View style={styles.footerActions}>
+          <QuantitySelector
+            quantity={qty}
+            onIncrement={() => setQty((q) => q + 1)}
+            onDecrement={() => setQty((q) => Math.max(1, q - 1))}
+            min={1}
+            max={product.stockCount ?? 99}
+          />
+          <View style={styles.addBtnWrapper}>
+            <Button
+              label={`Add to Cart · $${(product.pricePerUnit * qty).toFixed(2)}`}
+              onPress={handleAddToCart}
+              disabled={!product.inStock}
+              fullWidth
+            />
+          </View>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -116,98 +132,111 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   navBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     paddingHorizontal: SPACING.lg,
-    paddingVertical: SPACING.md,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: COLORS.gray200,
+    paddingVertical: SPACING.sm,
   },
   backBtn: {
     width: 40,
     height: 40,
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'center',
-    borderRadius: 20,
-    backgroundColor: COLORS.gray100,
   },
   backIcon: {
-    fontSize: 20,
-    color: COLORS.green900,
-  },
-  navTitle: {
-    ...TYPOGRAPHY.headingSm,
-    color: COLORS.green900,
-    flex: 1,
-    textAlign: 'center',
-    marginHorizontal: SPACING.sm,
+    fontSize: 22,
+    color: COLORS.black,
   },
   scroll: {
     flex: 1,
   },
   image: {
     width: '100%',
-    height: 280,
-    backgroundColor: COLORS.gray100,
+    height: 300,
+    backgroundColor: COLORS.offWhite,
   },
   body: {
     padding: SPACING.lg,
   },
-  name: {
-    ...TYPOGRAPHY.headingLg,
-    color: COLORS.green900,
-    marginBottom: SPACING.xs,
+  topRow: {
+    flexDirection: 'row',
+    gap: SPACING.lg,
+    marginBottom: SPACING.lg,
+    paddingBottom: SPACING.lg,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.xLightGray,
   },
-  origin: {
+  metaCol: {
+    width: 110,
+  },
+  metaLabel: {
+    ...TYPOGRAPHY.bodySm,
+    color: COLORS.midGray,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginBottom: 2,
+  },
+  metaValue: {
     ...TYPOGRAPHY.bodyMd,
-    color: COLORS.gray400,
-    marginBottom: SPACING.md,
+    color: COLORS.darkGray,
   },
-  badgeRow: {
+  badges: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginBottom: SPACING.md,
+    gap: 4,
+    marginTop: 2,
+  },
+  nameCol: {
+    flex: 1,
+    justifyContent: 'flex-start',
+  },
+  productName: {
+    ...TYPOGRAPHY.headingLg,
+    fontSize: 28,
+    color: COLORS.black,
+    lineHeight: 34,
   },
   description: {
     ...TYPOGRAPHY.bodyLg,
-    color: COLORS.gray600,
+    color: COLORS.darkGray,
     lineHeight: 26,
+    marginBottom: SPACING.md,
   },
-  lowStockBanner: {
-    backgroundColor: COLORS.earth100,
-    borderRadius: 10,
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.sm,
-    marginTop: SPACING.lg,
-  },
-  lowStockText: {
-    ...TYPOGRAPHY.labelSm,
-    color: COLORS.earth700,
+  lowStock: {
+    ...TYPOGRAPHY.bodySm,
+    color: COLORS.accent,
+    fontWeight: '600',
   },
   footer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: SPACING.md,
     paddingHorizontal: SPACING.lg,
     paddingVertical: SPACING.lg,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: COLORS.gray200,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.xLightGray,
     backgroundColor: COLORS.white,
+    gap: SPACING.md,
   },
-  footerLeft: {
-    marginRight: SPACING.xs,
+  footerTop: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    gap: SPACING.xs,
   },
   price: {
     ...TYPOGRAPHY.price,
-    color: COLORS.green700,
+    fontSize: 22,
+    color: COLORS.black,
   },
   unit: {
     ...TYPOGRAPHY.bodySm,
-    color: COLORS.gray400,
+    color: COLORS.midGray,
+  },
+  footerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.md,
+  },
+  addBtnWrapper: {
+    flex: 1,
   },
   notFound: {
     padding: SPACING.xl,
-    color: COLORS.gray400,
+    color: COLORS.midGray,
   },
 });

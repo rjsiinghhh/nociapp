@@ -9,27 +9,25 @@ import {
   StatusBar,
 } from 'react-native';
 import { COLORS, SPACING, TYPOGRAPHY } from '../../theme';
-import { Divider } from '../../components/common/Divider';
 
 const SETTINGS = [
   { icon: '🔔', label: 'Notifications' },
   { icon: '💳', label: 'Payment methods' },
   { icon: '📍', label: 'Saved addresses' },
-  { icon: '🌿', label: 'About noci' },
+  { icon: '○', label: 'About noci' },
   { icon: '📋', label: 'Terms & privacy' },
 ];
 
 export function ProfileScreen() {
   return (
     <SafeAreaView style={styles.safe}>
-      <StatusBar barStyle="dark-content" backgroundColor={COLORS.green50} />
+      <StatusBar barStyle="dark-content" />
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scroll}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Profile</Text>
-        </View>
+        <Text style={styles.title}>Profile</Text>
 
-        <View style={styles.avatarCard}>
+        {/* User card */}
+        <View style={styles.userCard}>
           <View style={styles.avatar}>
             <Text style={styles.avatarText}>R</Text>
           </View>
@@ -42,28 +40,27 @@ export function ProfileScreen() {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Account</Text>
-          <View style={styles.settingsList}>
-            {SETTINGS.map((item, i) => (
-              <React.Fragment key={item.label}>
-                <TouchableOpacity style={styles.settingsRow} activeOpacity={0.7}>
-                  <Text style={styles.settingsIcon}>{item.icon}</Text>
-                  <Text style={styles.settingsLabel}>{item.label}</Text>
-                  <Text style={styles.settingsChevron}>›</Text>
-                </TouchableOpacity>
-                {i < SETTINGS.length - 1 && <Divider margin={0} />}
-              </React.Fragment>
-            ))}
-          </View>
+        {/* Settings */}
+        <Text style={styles.sectionLabel}>Account</Text>
+        <View style={styles.settingsList}>
+          {SETTINGS.map((item, i) => (
+            <React.Fragment key={item.label}>
+              <TouchableOpacity style={styles.settingsRow} activeOpacity={0.7}>
+                <Text style={styles.settingsIcon}>{item.icon}</Text>
+                <Text style={styles.settingsLabel}>{item.label}</Text>
+                <Text style={styles.chevron}>›</Text>
+              </TouchableOpacity>
+              {i < SETTINGS.length - 1 && <View style={styles.rowDivider} />}
+            </React.Fragment>
+          ))}
         </View>
 
+        {/* Mission */}
         <View style={styles.missionBox}>
-          <Text style={styles.missionTitle}>🌱 Our mission</Text>
+          <Text style={styles.missionHeading}>noci.</Text>
           <Text style={styles.missionText}>
-            noci connects you with the freshest local produce, picked up from nearby farms every
-            morning and delivered straight to your door. No middlemen. Just good food from good
-            people.
+            Picked up from nearby farms each morning, delivered to your door. No middlemen — just
+            good food from good people.
           </Text>
         </View>
 
@@ -78,38 +75,33 @@ export function ProfileScreen() {
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: COLORS.green50,
+    backgroundColor: COLORS.white,
   },
   scroll: {
     padding: SPACING.lg,
     gap: SPACING.lg,
     paddingBottom: SPACING.xxxl,
   },
-  header: {
+  title: {
+    fontFamily: TYPOGRAPHY.displaySm.fontFamily,
+    fontSize: 34,
+    color: COLORS.black,
     paddingTop: SPACING.sm,
   },
-  title: {
-    ...TYPOGRAPHY.headingLg,
-    color: COLORS.green900,
-  },
-  avatarCard: {
+  userCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.white,
-    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: COLORS.xLightGray,
+    borderRadius: 8,
     padding: SPACING.lg,
-    shadowColor: COLORS.green900,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.06,
-    shadowRadius: 6,
-    elevation: 2,
     gap: SPACING.md,
   },
   avatar: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: COLORS.green700,
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    backgroundColor: COLORS.black,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -122,41 +114,34 @@ const styles = StyleSheet.create({
   },
   userName: {
     ...TYPOGRAPHY.headingMd,
-    color: COLORS.green900,
+    color: COLORS.black,
   },
   userEmail: {
     ...TYPOGRAPHY.bodyMd,
-    color: COLORS.gray400,
+    color: COLORS.midGray,
   },
   editBtn: {
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.sm,
-    borderRadius: 10,
+    borderRadius: 6,
     borderWidth: 1.5,
-    borderColor: COLORS.green700,
+    borderColor: COLORS.xLightGray,
   },
   editBtnText: {
     ...TYPOGRAPHY.labelSm,
-    color: COLORS.green700,
+    color: COLORS.midGray,
   },
-  section: {
-    gap: SPACING.sm,
-  },
-  sectionTitle: {
+  sectionLabel: {
     ...TYPOGRAPHY.labelSm,
-    color: COLORS.gray400,
+    color: COLORS.lightGray,
     textTransform: 'uppercase',
-    letterSpacing: 0.5,
+    letterSpacing: 0.8,
   },
   settingsList: {
-    backgroundColor: COLORS.white,
-    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: COLORS.xLightGray,
+    borderRadius: 8,
     overflow: 'hidden',
-    shadowColor: COLORS.green900,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.06,
-    shadowRadius: 6,
-    elevation: 2,
   },
   settingsRow: {
     flexDirection: 'row',
@@ -164,34 +149,41 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.lg,
     paddingVertical: SPACING.md,
     gap: SPACING.md,
+    backgroundColor: COLORS.white,
   },
   settingsIcon: {
-    fontSize: 20,
+    fontSize: 18,
+    width: 24,
+    textAlign: 'center',
   },
   settingsLabel: {
     ...TYPOGRAPHY.bodyMd,
-    color: COLORS.green900,
+    color: COLORS.black,
     flex: 1,
   },
-  settingsChevron: {
-    fontSize: 20,
-    color: COLORS.gray400,
+  chevron: {
+    fontSize: 18,
+    color: COLORS.lightGray,
+  },
+  rowDivider: {
+    height: 1,
+    backgroundColor: COLORS.xLightGray,
+    marginLeft: SPACING.lg + 24 + SPACING.md,
   },
   missionBox: {
-    backgroundColor: COLORS.green50,
-    borderRadius: 14,
-    padding: SPACING.lg,
-    borderWidth: 1.5,
-    borderColor: COLORS.green200,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.xLightGray,
+    paddingTop: SPACING.lg,
     gap: SPACING.sm,
   },
-  missionTitle: {
-    ...TYPOGRAPHY.headingSm,
-    color: COLORS.green900,
+  missionHeading: {
+    fontFamily: TYPOGRAPHY.displaySm.fontFamily,
+    fontSize: 28,
+    color: COLORS.accent,
   },
   missionText: {
     ...TYPOGRAPHY.bodyMd,
-    color: COLORS.gray600,
+    color: COLORS.midGray,
     lineHeight: 22,
   },
   signOutBtn: {
@@ -200,6 +192,6 @@ const styles = StyleSheet.create({
   },
   signOutText: {
     ...TYPOGRAPHY.bodyMd,
-    color: COLORS.error,
+    color: COLORS.midGray,
   },
 });

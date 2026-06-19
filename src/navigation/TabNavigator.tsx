@@ -1,7 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import { Text } from 'react-native';
 import type { TabParamList } from './types';
 import { COLORS } from '../theme';
 import { HomeScreen } from '../screens/home/HomeScreen';
@@ -19,11 +18,11 @@ export function TabNavigator() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: COLORS.green700,
-        tabBarInactiveTintColor: COLORS.gray400,
+        tabBarActiveTintColor: COLORS.accent,      // accent for active tab icon + label
+        tabBarInactiveTintColor: COLORS.lightGray,
         tabBarStyle: {
           backgroundColor: COLORS.white,
-          borderTopColor: COLORS.green200,
+          borderTopColor: COLORS.xLightGray,
           borderTopWidth: 1,
           height: 60,
           paddingBottom: 8,
@@ -31,7 +30,8 @@ export function TabNavigator() {
         },
         tabBarLabelStyle: {
           fontSize: 11,
-          fontWeight: '600',
+          fontWeight: '500',
+          letterSpacing: 0.2,
         },
       }}
     >
@@ -41,7 +41,7 @@ export function TabNavigator() {
         options={{
           tabBarLabel: 'Menu',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="leaf" size={size} color={color} />
+            <Ionicons name="leaf-outline" size={size} color={color} />
           ),
         }}
       />
@@ -51,7 +51,7 @@ export function TabNavigator() {
         options={{
           tabBarLabel: 'Basket',
           tabBarBadge: itemCount > 0 ? itemCount : undefined,
-          tabBarBadgeStyle: { backgroundColor: COLORS.earth700, fontSize: 10 },
+          tabBarBadgeStyle: { backgroundColor: COLORS.accent, fontSize: 10 },
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="basket-outline" size={size} color={color} />
           ),

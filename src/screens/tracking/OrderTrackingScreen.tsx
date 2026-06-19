@@ -19,10 +19,10 @@ import { Divider } from '../../components/common/Divider';
 type Props = NativeStackScreenProps<RootStackParamList, 'OrderTracking'>;
 
 const STATUS_STEPS = [
-  { label: 'Confirmed', emoji: '✅' },
-  { label: 'Picking fresh', emoji: '🧺' },
-  { label: 'On the way', emoji: '🚗' },
-  { label: 'Delivered', emoji: '🏠' },
+  { label: 'Confirmed', emoji: '✓' },
+  { label: 'Picking', emoji: '○' },
+  { label: 'On the way', emoji: '○' },
+  { label: 'Delivered', emoji: '○' },
 ];
 
 const STATUS_INDEX: Record<string, number> = {
@@ -46,7 +46,7 @@ export function OrderTrackingScreen({ route, navigation }: Props) {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle="light-content" />
 
       <View style={styles.navBar}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
@@ -57,9 +57,10 @@ export function OrderTrackingScreen({ route, navigation }: Props) {
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scroll}>
+        {/* Status hero — solid black, matching noci.farm CTA button style */}
         <View style={styles.statusCard}>
           <Text style={styles.statusLabel}>
-            {order.status === 'delivered' ? '🎉 Delivered!' : '📦 Your order is on its way'}
+            {order.status === 'delivered' ? 'Delivered.' : 'On its way.'}
           </Text>
           <Text style={styles.slotText}>{order.slot.label}</Text>
           <Text style={styles.addressText}>{order.deliveryAddress}</Text>
@@ -70,7 +71,7 @@ export function OrderTrackingScreen({ route, navigation }: Props) {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Items in this order</Text>
+          <Text style={styles.sectionTitle}>Items</Text>
           {order.items.map((item) => (
             <View key={item.product.id} style={styles.itemRow}>
               <Image
@@ -95,7 +96,7 @@ export function OrderTrackingScreen({ route, navigation }: Props) {
         <Divider />
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Order details</Text>
+          <Text style={styles.sectionTitle}>Details</Text>
           <DetailRow label="Placed" value={placedDate} />
           <DetailRow label="Subtotal" value={`$${order.subtotal.toFixed(2)}`} />
           <DetailRow label="Delivery fee" value={`$${order.deliveryFee.toFixed(2)}`} />
@@ -103,7 +104,7 @@ export function OrderTrackingScreen({ route, navigation }: Props) {
         </View>
 
         <TouchableOpacity style={styles.helpBtn}>
-          <Text style={styles.helpText}>Need help with this order? Contact us →</Text>
+          <Text style={styles.helpText}>Need help? Contact us →</Text>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
@@ -122,7 +123,7 @@ function DetailRow({ label, value, bold }: { label: string; value: string; bold?
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: COLORS.green50,
+    backgroundColor: COLORS.white,
   },
   navBar: {
     flexDirection: 'row',
@@ -130,104 +131,103 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: SPACING.lg,
     paddingVertical: SPACING.md,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: COLORS.gray200,
-    backgroundColor: COLORS.white,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.xLightGray,
   },
   backBtn: {
     width: 40,
     height: 40,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 20,
-    backgroundColor: COLORS.gray100,
   },
   backIcon: {
     fontSize: 20,
-    color: COLORS.green900,
+    color: COLORS.black,
   },
   navTitle: {
     ...TYPOGRAPHY.headingSm,
-    color: COLORS.green900,
+    color: COLORS.black,
   },
   scroll: {
     padding: SPACING.lg,
     gap: SPACING.lg,
     paddingBottom: SPACING.xxxl,
   },
+  // Solid black status card — mirrors the "Add to Cart" button aesthetic
   statusCard: {
-    backgroundColor: COLORS.green700,
-    borderRadius: 18,
+    backgroundColor: COLORS.black,
+    borderRadius: 8,
     padding: SPACING.xl,
+    gap: SPACING.xs,
   },
   statusLabel: {
-    ...TYPOGRAPHY.headingMd,
+    fontFamily: TYPOGRAPHY.displaySm.fontFamily,
+    fontSize: 32,
     color: COLORS.white,
-    marginBottom: SPACING.xs,
   },
   slotText: {
     ...TYPOGRAPHY.bodyMd,
-    color: COLORS.green200,
-    marginBottom: SPACING.xs,
+    color: COLORS.lightGray,
   },
   addressText: {
     ...TYPOGRAPHY.bodySm,
-    color: COLORS.green200,
+    color: COLORS.midGray,
   },
   stepperCard: {
     backgroundColor: COLORS.white,
-    borderRadius: 16,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: COLORS.xLightGray,
     padding: SPACING.lg,
-    shadowColor: COLORS.green900,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.06,
-    shadowRadius: 6,
-    elevation: 2,
   },
   section: {
     gap: SPACING.sm,
   },
   sectionTitle: {
-    ...TYPOGRAPHY.headingSm,
-    color: COLORS.green900,
+    ...TYPOGRAPHY.labelSm,
+    color: COLORS.midGray,
+    textTransform: 'uppercase',
+    letterSpacing: 0.8,
     marginBottom: SPACING.xs,
   },
   itemRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.white,
-    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: COLORS.xLightGray,
+    borderRadius: 8,
     padding: SPACING.md,
     gap: SPACING.md,
+    backgroundColor: COLORS.white,
   },
   itemImage: {
-    width: 56,
-    height: 56,
-    borderRadius: 8,
-    backgroundColor: COLORS.gray100,
+    width: 52,
+    height: 52,
+    borderRadius: 6,
+    backgroundColor: COLORS.offWhite,
   },
   itemInfo: {
     flex: 1,
   },
   itemName: {
     ...TYPOGRAPHY.headingSm,
-    color: COLORS.green900,
+    color: COLORS.black,
     fontSize: 14,
   },
   itemOrigin: {
     ...TYPOGRAPHY.bodySm,
-    color: COLORS.gray400,
+    color: COLORS.midGray,
   },
   itemRight: {
     alignItems: 'flex-end',
   },
   itemQty: {
     ...TYPOGRAPHY.bodySm,
-    color: COLORS.gray400,
+    color: COLORS.midGray,
   },
   itemPrice: {
     ...TYPOGRAPHY.labelLg,
-    color: COLORS.green700,
+    color: COLORS.black,
   },
   helpBtn: {
     alignItems: 'center',
@@ -235,8 +235,7 @@ const styles = StyleSheet.create({
   },
   helpText: {
     ...TYPOGRAPHY.bodyMd,
-    color: COLORS.green700,
-    textDecorationLine: 'underline',
+    color: COLORS.accent,
   },
 });
 
@@ -248,15 +247,15 @@ const detailStyles = StyleSheet.create({
   },
   label: {
     ...TYPOGRAPHY.bodyMd,
-    color: COLORS.gray600,
+    color: COLORS.midGray,
   },
   value: {
     ...TYPOGRAPHY.bodyMd,
-    color: COLORS.gray600,
+    color: COLORS.midGray,
   },
   bold: {
     ...TYPOGRAPHY.labelLg,
-    color: COLORS.green900,
+    color: COLORS.black,
     fontSize: 16,
   },
 });

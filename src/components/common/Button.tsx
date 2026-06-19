@@ -1,11 +1,18 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, ActivityIndicator, View } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { COLORS, SPACING, TYPOGRAPHY } from '../../theme';
 
 interface ButtonProps {
   label: string;
   onPress: () => void;
-  variant?: 'primary' | 'secondary' | 'ghost';
+  /**
+   * primary  — solid black, white text (matches "Add to Cart" on noci.farm)
+   * option   — accent-outlined when idle, accent-filled when selected
+   *            (matches size/variant selectors on noci.farm)
+   * ghost    — no fill, black text (for less prominent actions)
+   */
+  variant?: 'primary' | 'option' | 'ghost';
+  selected?: boolean;   // for variant="option" only
   loading?: boolean;
   disabled?: boolean;
   fullWidth?: boolean;
@@ -16,6 +23,7 @@ export function Button({
   label,
   onPress,
   variant = 'primary',
+  selected = false,
   loading = false,
   disabled = false,
   fullWidth = false,
@@ -27,10 +35,12 @@ export function Button({
     <TouchableOpacity
       onPress={onPress}
       disabled={isDisabled}
-      activeOpacity={0.8}
+      activeOpacity={0.75}
       style={[
         styles.base,
-        styles[variant],
+        variant === 'primary' && styles.primary,
+        variant === 'option' && (selected ? styles.optionSelected : styles.option),
+        variant === 'ghost' && styles.ghost,
         size === 'sm' && styles.sm,
         size === 'lg' && styles.lg,
         fullWidth && styles.fullWidth,
@@ -38,9 +48,20 @@ export function Button({
       ]}
     >
       {loading ? (
-        <ActivityIndicator color={variant === 'primary' ? COLORS.white : COLORS.earth700} size="small" />
+        <ActivityIndicator
+          color={variant === 'primary' || (variant === 'option' && selected) ? COLORS.white : COLORS.black}
+          size="small"
+        />
       ) : (
-        <Text style={[styles.label, styles[`${variant}Label`], size === 'sm' && styles.smLabel]}>
+        <Text
+          style={[
+            styles.label,
+            variant === 'primary' && styles.primaryLabel,
+            variant === 'option' && (selected ? styles.optionSelectedLabel : styles.optionLabel),
+            variant === 'ghost' && styles.ghostLabel,
+            size === 'sm' && styles.smLabel,
+          ]}
+        >
           {label}
         </Text>
       )}
@@ -50,51 +71,71 @@ export function Button({
 
 const styles = StyleSheet.create({
   base: {
-    borderRadius: 12,
+    borderRadius: 8,
     paddingVertical: SPACING.md,
     paddingHorizontal: SPACING.xl,
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row',
   },
   sm: {
     paddingVertical: SPACING.sm,
     paddingHorizontal: SPACING.md,
-    borderRadius: 8,
+    borderRadius: 6,
   },
   lg: {
-    paddingVertical: SPACING.lg,
+    paddingVertical: 16,
     paddingHorizontal: SPACING.xxl,
-    borderRadius: 14,
+    borderRadius: 8,
   },
   fullWidth: {
     alignSelf: 'stretch',
   },
+
+  // Solid black — "Add to Cart", "Place Order", primary actions
   primary: {
-    backgroundColor: COLORS.earth700,
-  },
-  secondary: {
-    backgroundColor: 'transparent',
-    borderWidth: 1.5,
-    borderColor: COLORS.green700,
-  },
-  ghost: {
-    backgroundColor: 'transparent',
-  },
-  disabled: {
-    opacity: 0.45,
-  },
-  label: {
-    ...TYPOGRAPHY.labelLg,
+    backgroundColor: COLORS.black,
   },
   primaryLabel: {
     color: COLORS.white,
+    ...TYPOGRAPHY.labelLg,
+    letterSpacing: 0.4,
   },
-  secondaryLabel: {
-    color: COLORS.green700,
+
+  // Outlined with accent border — idle option/selector state (matches noci.farm size buttons)
+  option: {
+    backgroundColor: COLORS.white,
+    borderWidth: 1.5,
+    borderColor: COLORS.accent,
+  },
+  optionLabel: {
+    color: COLORS.accent,
+    ...TYPOGRAPHY.labelLg,
+  },
+
+  // Filled accent — selected option state
+  optionSelected: {
+    backgroundColor: COLORS.accent,
+    borderWidth: 1.5,
+    borderColor: COLORS.accent,
+  },
+  optionSelectedLabel: {
+    color: COLORS.white,
+    ...TYPOGRAPHY.labelLg,
+  },
+
+  ghost: {
+    backgroundColor: 'transparent',
   },
   ghostLabel: {
-    color: COLORS.green700,
+    color: COLORS.black,
+    ...TYPOGRAPHY.labelLg,
+  },
+
+  disabled: {
+    opacity: 0.35,
+  },
+  label: {
+    ...TYPOGRAPHY.labelLg,
   },
   smLabel: {
     ...TYPOGRAPHY.labelSm,

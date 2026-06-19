@@ -21,14 +21,24 @@ export function StatusStepper({ steps, currentIndex }: StatusStepperProps) {
         return (
           <View key={step.label} style={styles.stepWrapper}>
             <View style={styles.stepRow}>
-              <View style={[styles.circle, isDone && styles.circleDone, isActive && styles.circleActive]}>
-                <Text style={styles.emoji}>{isDone ? '✓' : step.emoji}</Text>
+              <View style={[
+                styles.circle,
+                isDone && styles.circleDone,
+                isActive && styles.circleActive,
+              ]}>
+                <Text style={[styles.circleText, (isDone || isActive) && styles.circleTextActive]}>
+                  {isDone ? '✓' : String(i + 1)}
+                </Text>
               </View>
               {i < steps.length - 1 && (
                 <View style={[styles.line, isDone && styles.lineDone]} />
               )}
             </View>
-            <Text style={[styles.label, isActive && styles.labelActive, isDone && styles.labelDone]}>
+            <Text style={[
+              styles.label,
+              isActive && styles.labelActive,
+              isDone && styles.labelDone,
+            ]}>
               {step.label}
             </Text>
           </View>
@@ -43,7 +53,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
-    paddingHorizontal: SPACING.xs,
   },
   stepWrapper: {
     alignItems: 'center',
@@ -55,48 +64,53 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   circle: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: COLORS.gray100,
-    borderWidth: 2,
-    borderColor: COLORS.gray200,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    borderWidth: 1.5,
+    borderColor: COLORS.xLightGray,
+    backgroundColor: COLORS.white,
     alignItems: 'center',
     justifyContent: 'center',
   },
   circleDone: {
-    backgroundColor: COLORS.green700,
-    borderColor: COLORS.green700,
+    backgroundColor: COLORS.black,
+    borderColor: COLORS.black,
   },
+  // Active step uses accent color (the changeable brand color)
   circleActive: {
-    backgroundColor: COLORS.earth100,
-    borderColor: COLORS.earth700,
-    borderWidth: 2.5,
+    backgroundColor: COLORS.accent,
+    borderColor: COLORS.accent,
   },
-  emoji: {
-    fontSize: 18,
+  circleText: {
+    ...TYPOGRAPHY.labelSm,
+    color: COLORS.lightGray,
+  },
+  circleTextActive: {
+    color: COLORS.white,
   },
   line: {
     flex: 1,
-    height: 2,
-    backgroundColor: COLORS.gray200,
+    height: 1.5,
+    backgroundColor: COLORS.xLightGray,
     marginHorizontal: -2,
   },
   lineDone: {
-    backgroundColor: COLORS.green700,
+    backgroundColor: COLORS.black,
   },
   label: {
     ...TYPOGRAPHY.bodySm,
-    color: COLORS.gray400,
+    color: COLORS.lightGray,
     textAlign: 'center',
     marginTop: SPACING.sm,
     paddingHorizontal: 2,
+    fontSize: 10,
   },
   labelActive: {
-    color: COLORS.earth700,
+    color: COLORS.accent,
     fontWeight: '600',
   },
   labelDone: {
-    color: COLORS.green700,
+    color: COLORS.midGray,
   },
 });

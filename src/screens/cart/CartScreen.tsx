@@ -33,13 +33,13 @@ export function CartScreen({ navigation }: Props) {
   if (itemCount === 0) {
     return (
       <SafeAreaView style={styles.safe}>
-        <StatusBar barStyle="dark-content" backgroundColor={COLORS.green50} />
+        <StatusBar barStyle="dark-content" />
         <View style={styles.header}>
-          <Text style={styles.title}>Your Basket</Text>
+          <Text style={styles.title}>Basket</Text>
         </View>
         <EmptyState
-          emoji="🧺"
-          title="Your basket is empty"
+          emoji="○"
+          title="Your basket is empty."
           subtitle="Browse today's menu and add some fresh produce."
           actionLabel="Browse menu"
           onAction={() => navigation.navigate('Home')}
@@ -50,12 +50,12 @@ export function CartScreen({ navigation }: Props) {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <StatusBar barStyle="dark-content" backgroundColor={COLORS.green50} />
+      <StatusBar barStyle="dark-content" />
 
       <View style={styles.header}>
-        <Text style={styles.title}>Your Basket</Text>
+        <Text style={styles.title}>Basket</Text>
         <TouchableOpacity onPress={clearCart} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
-          <Text style={styles.clearAll}>Clear all</Text>
+          <Text style={styles.clearAll}>Clear</Text>
         </TouchableOpacity>
       </View>
 
@@ -70,7 +70,9 @@ export function CartScreen({ navigation }: Props) {
             <CartSummary subtotal={subtotal} deliveryFee={DELIVERY_FEE} />
             <View style={styles.cutoff}>
               <Text style={styles.cutoffText}>
-                ⏰ Orders placed after <Text style={styles.cutoffBold}>10 PM</Text> deliver the following day
+                Orders placed after{' '}
+                <Text style={styles.cutoffAccent}>10 PM</Text>
+                {' '}deliver the following day.
               </Text>
             </View>
             <Button
@@ -89,43 +91,48 @@ export function CartScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: COLORS.green50,
+    backgroundColor: COLORS.white,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'baseline',
     paddingHorizontal: SPACING.lg,
     paddingTop: SPACING.lg,
     paddingBottom: SPACING.md,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.xLightGray,
   },
   title: {
-    ...TYPOGRAPHY.headingLg,
-    color: COLORS.green900,
+    fontFamily: TYPOGRAPHY.displaySm.fontFamily,
+    fontSize: 34,
+    color: COLORS.black,
   },
   clearAll: {
     ...TYPOGRAPHY.bodyMd,
-    color: COLORS.error,
+    color: COLORS.midGray,
   },
   list: {
-    paddingHorizontal: SPACING.lg,
+    padding: SPACING.lg,
     paddingBottom: SPACING.xxl,
   },
   footer: {
     gap: SPACING.md,
-    marginTop: SPACING.md,
+    marginTop: SPACING.sm,
   },
   cutoff: {
-    backgroundColor: COLORS.earth100,
-    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: COLORS.xLightGray,
+    borderRadius: 8,
     padding: SPACING.md,
   },
   cutoffText: {
     ...TYPOGRAPHY.bodySm,
-    color: COLORS.earth700,
+    color: COLORS.midGray,
     textAlign: 'center',
   },
-  cutoffBold: {
+  cutoffAccent: {
+    color: COLORS.accent,
     fontWeight: '700',
   },
 });

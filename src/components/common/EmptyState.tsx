@@ -18,7 +18,7 @@ export function EmptyState({ emoji, title, subtitle, actionLabel, onAction }: Em
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.subtitle}>{subtitle}</Text>
       {actionLabel && onAction && (
-        <Button label={actionLabel} onPress={onAction} variant="secondary" />
+        <Button label={actionLabel} onPress={onAction} variant="ghost" />
       )}
     </View>
   );

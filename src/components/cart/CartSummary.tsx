@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { COLORS, SPACING, TYPOGRAPHY } from '../../theme';
-import { Divider } from '../common/Divider';
 
 interface CartSummaryProps {
   subtotal: number;
@@ -15,7 +14,7 @@ export function CartSummary({ subtotal, deliveryFee }: CartSummaryProps) {
     <View style={styles.container}>
       <Row label="Subtotal" value={`$${subtotal.toFixed(2)}`} />
       <Row label="Delivery fee" value={`$${deliveryFee.toFixed(2)}`} />
-      <Divider margin={SPACING.md} />
+      <View style={styles.divider} />
       <Row label="Total" value={`$${total.toFixed(2)}`} bold />
     </View>
   );
@@ -33,30 +32,32 @@ function Row({ label, value, bold }: { label: string; value: string; bold?: bool
 const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.white,
-    borderRadius: 14,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: COLORS.xLightGray,
     padding: SPACING.lg,
-    shadowColor: COLORS.green900,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: SPACING.sm,
   },
+  divider: {
+    height: 1,
+    backgroundColor: COLORS.xLightGray,
+    marginVertical: SPACING.sm,
+  },
   label: {
     ...TYPOGRAPHY.bodyMd,
-    color: COLORS.gray600,
+    color: COLORS.midGray,
   },
   value: {
     ...TYPOGRAPHY.bodyMd,
-    color: COLORS.gray600,
+    color: COLORS.midGray,
   },
   bold: {
     ...TYPOGRAPHY.labelLg,
-    color: COLORS.green900,
+    color: COLORS.black,
     fontSize: 16,
   },
 });

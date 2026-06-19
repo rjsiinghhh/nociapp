@@ -9,7 +9,7 @@ interface CartItemRowProps {
 }
 
 export function CartItemRow({ item }: CartItemRowProps) {
-  const { updateQuantity, removeItem } = useCart();
+  const { updateQuantity } = useCart();
   const { product, quantity } = item;
 
   return (
@@ -20,14 +20,15 @@ export function CartItemRow({ item }: CartItemRowProps) {
         <Text style={styles.origin}>{product.farmOrigin}</Text>
         <Text style={styles.unitPrice}>${product.pricePerUnit.toFixed(2)} / {product.unit}</Text>
       </View>
-      <View style={styles.controls}>
+      <View style={styles.right}>
         <Text style={styles.subtotal}>${(product.pricePerUnit * quantity).toFixed(2)}</Text>
+        {/* Accent-outlined qty adjuster — matches noci.farm option button style */}
         <View style={styles.qtyRow}>
           <TouchableOpacity
             style={styles.qtyBtn}
             onPress={() => updateQuantity(product.id, quantity - 1)}
           >
-            <Text style={styles.qtyBtnText}>{quantity === 1 ? '🗑' : '−'}</Text>
+            <Text style={styles.qtyBtnText}>{quantity === 1 ? '×' : '−'}</Text>
           </TouchableOpacity>
           <Text style={styles.qty}>{quantity}</Text>
           <TouchableOpacity
@@ -47,20 +48,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.white,
-    borderRadius: 14,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: COLORS.xLightGray,
     padding: SPACING.md,
     marginBottom: SPACING.sm,
-    shadowColor: COLORS.green900,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
   },
   image: {
-    width: 72,
-    height: 72,
-    borderRadius: 10,
-    backgroundColor: COLORS.gray100,
+    width: 68,
+    height: 68,
+    borderRadius: 6,
+    backgroundColor: COLORS.offWhite,
   },
   info: {
     flex: 1,
@@ -68,50 +66,49 @@ const styles = StyleSheet.create({
   },
   name: {
     ...TYPOGRAPHY.headingSm,
-    color: COLORS.green900,
+    color: COLORS.black,
     marginBottom: 2,
   },
   origin: {
     ...TYPOGRAPHY.bodySm,
-    color: COLORS.gray400,
+    color: COLORS.midGray,
     marginBottom: 2,
   },
   unitPrice: {
     ...TYPOGRAPHY.bodySm,
-    color: COLORS.gray600,
+    color: COLORS.midGray,
   },
-  controls: {
+  right: {
     alignItems: 'flex-end',
     marginLeft: SPACING.sm,
   },
   subtotal: {
     ...TYPOGRAPHY.labelLg,
-    color: COLORS.green700,
+    color: COLORS.black,
     marginBottom: SPACING.sm,
   },
   qtyRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.green50,
-    borderRadius: 8,
     borderWidth: 1.5,
-    borderColor: COLORS.green200,
+    borderColor: COLORS.accent,
+    borderRadius: 6,
     paddingHorizontal: 4,
   },
   qtyBtn: {
-    width: 28,
+    width: 26,
     height: 28,
     alignItems: 'center',
     justifyContent: 'center',
   },
   qtyBtnText: {
-    color: COLORS.green700,
+    color: COLORS.accent,
     fontSize: 15,
     fontWeight: '600',
   },
   qty: {
     ...TYPOGRAPHY.labelSm,
-    color: COLORS.green900,
+    color: COLORS.black,
     minWidth: 20,
     textAlign: 'center',
   },

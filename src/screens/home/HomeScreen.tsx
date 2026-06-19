@@ -43,6 +43,11 @@ export function HomeScreen({ navigation }: Props) {
     return list;
   }, [search, selectedCategory]);
 
+  const pairs: Product[][] = [];
+  for (let i = 0; i < filtered.length; i += 2) {
+    pairs.push(filtered.slice(i, i + 2));
+  }
+
   const renderItem: ListRenderItem<Product[]> = ({ item: pair }) => (
     <View style={styles.row}>
       <ProductCard
@@ -60,14 +65,9 @@ export function HomeScreen({ navigation }: Props) {
     </View>
   );
 
-  const pairs: Product[][] = [];
-  for (let i = 0; i < filtered.length; i += 2) {
-    pairs.push(filtered.slice(i, i + 2));
-  }
-
   return (
     <SafeAreaView style={styles.safe}>
-      <StatusBar barStyle="dark-content" backgroundColor={COLORS.green50} />
+      <StatusBar barStyle="dark-content" backgroundColor={COLORS.white} />
 
       <FlatList
         data={pairs}
@@ -77,29 +77,36 @@ export function HomeScreen({ navigation }: Props) {
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <>
+            {/* noci wordmark — Caveat Bold red, all-caps, matching noci.farm */}
             <View style={styles.header}>
-              <View>
-                <Text style={styles.greeting}>Good morning 🌱</Text>
-                <Text style={styles.title}>Today's menu</Text>
-              </View>
+              <Text style={styles.wordmark}>NOCI</Text>
             </View>
 
-            <View style={styles.cutoffBanner}>
-              <Text style={styles.cutoffEmoji}>⏰</Text>
-              <Text style={styles.cutoffText}>
-                Order by <Text style={styles.cutoffBold}>10 PM tonight</Text> for tomorrow morning delivery
+            {/* Hero headline — Caveat display, dark */}
+            <View style={styles.heroBlock}>
+              <Text style={styles.heroText}>{"FRESH.\nLOCAL.\n& DELIVERED."}</Text>
+              <Text style={styles.heroSub}>
+                Picked up from nearby farms each morning, delivered to your door.
               </Text>
             </View>
 
+            {/* 10 PM cutoff notice */}
+            <View style={styles.cutoffBanner}>
+              <Text style={styles.cutoffText}>
+                Order by <Text style={styles.cutoffBold}>10 PM</Text> — delivered tomorrow morning.
+              </Text>
+            </View>
+
+            {/* Search */}
             <View style={styles.searchRow}>
               <View style={styles.searchBar}>
-                <Text style={styles.searchIcon}>🔍</Text>
+                <Text style={styles.searchIcon}>◎</Text>
                 <TextInput
                   style={styles.searchInput}
                   value={search}
                   onChangeText={setSearch}
                   placeholder="Search produce or farm..."
-                  placeholderTextColor={COLORS.gray400}
+                  placeholderTextColor={COLORS.lightGray}
                   returnKeyType="search"
                 />
                 {search.length > 0 && (
@@ -110,17 +117,17 @@ export function HomeScreen({ navigation }: Props) {
               </View>
             </View>
 
+            {/* Category filter */}
             <CategoryRow selectedId={selectedCategory} onSelect={setSelectedCategory} />
 
-            <Text style={styles.sectionLabel}>
-              {filtered.length} item{filtered.length !== 1 ? 's' : ''} available
+            <Text style={styles.count}>
+              {filtered.length} item{filtered.length !== 1 ? 's' : ''} today
             </Text>
           </>
         }
         ListEmptyComponent={
           <View style={styles.empty}>
-            <Text style={styles.emptyEmoji}>🥬</Text>
-            <Text style={styles.emptyTitle}>Nothing here yet</Text>
+            <Text style={styles.emptyTitle}>Nothing here yet.</Text>
             <Text style={styles.emptyText}>Try a different category or check back tomorrow.</Text>
           </View>
         }
@@ -132,47 +139,57 @@ export function HomeScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: COLORS.green50,
+    backgroundColor: COLORS.white,
   },
   list: {
     paddingBottom: SPACING.xxl,
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
     paddingHorizontal: SPACING.lg,
     paddingTop: SPACING.lg,
-    paddingBottom: SPACING.md,
+    paddingBottom: SPACING.sm,
   },
-  greeting: {
+  wordmark: {
+    fontFamily: TYPOGRAPHY.displayLg.fontFamily,
+    fontSize: 36,
+    color: COLORS.accent,
+    letterSpacing: 1,
+  },
+  heroBlock: {
+    paddingHorizontal: SPACING.lg,
+    paddingTop: SPACING.sm,
+    paddingBottom: SPACING.xl,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.xLightGray,
+    marginBottom: SPACING.lg,
+  },
+  heroText: {
+    fontFamily: TYPOGRAPHY.displayLg.fontFamily,
+    fontSize: 44,
+    color: COLORS.black,
+    lineHeight: 50,
+    marginBottom: SPACING.md,
+  },
+  heroSub: {
     ...TYPOGRAPHY.bodyMd,
-    color: COLORS.gray400,
-  },
-  title: {
-    ...TYPOGRAPHY.displayMd,
-    color: COLORS.green900,
+    color: COLORS.midGray,
+    lineHeight: 20,
   },
   cutoffBanner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.earth100,
     marginHorizontal: SPACING.lg,
-    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: COLORS.xLightGray,
+    borderRadius: 8,
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.sm,
     marginBottom: SPACING.md,
-    gap: SPACING.sm,
-  },
-  cutoffEmoji: {
-    fontSize: 16,
   },
   cutoffText: {
     ...TYPOGRAPHY.bodySm,
-    color: COLORS.earth700,
-    flex: 1,
+    color: COLORS.midGray,
   },
   cutoffBold: {
+    color: COLORS.accent,
     fontWeight: '700',
   },
   searchRow: {
@@ -182,38 +199,36 @@ const styles = StyleSheet.create({
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.white,
-    borderRadius: 14,
+    backgroundColor: COLORS.offWhite,
+    borderRadius: 8,
     paddingHorizontal: SPACING.md,
-    height: 46,
-    shadowColor: COLORS.green900,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
+    height: 44,
+    borderWidth: 1,
+    borderColor: COLORS.xLightGray,
   },
   searchIcon: {
-    fontSize: 16,
+    fontSize: 14,
+    color: COLORS.lightGray,
     marginRight: SPACING.sm,
   },
   searchInput: {
     flex: 1,
     ...TYPOGRAPHY.bodyMd,
-    color: COLORS.green900,
+    color: COLORS.black,
     padding: 0,
   },
   clearIcon: {
-    color: COLORS.gray400,
-    fontSize: 14,
+    color: COLORS.lightGray,
+    fontSize: 13,
     paddingLeft: SPACING.sm,
   },
-  sectionLabel: {
-    ...TYPOGRAPHY.labelSm,
-    color: COLORS.gray400,
+  count: {
+    ...TYPOGRAPHY.bodySm,
+    color: COLORS.lightGray,
     paddingHorizontal: SPACING.lg,
     paddingVertical: SPACING.sm,
     textTransform: 'uppercase',
-    letterSpacing: 0.5,
+    letterSpacing: 0.8,
   },
   row: {
     flexDirection: 'row',
@@ -228,18 +243,15 @@ const styles = StyleSheet.create({
     paddingTop: SPACING.xxxl,
     paddingHorizontal: SPACING.xl,
   },
-  emptyEmoji: {
-    fontSize: 48,
-    marginBottom: SPACING.lg,
-  },
   emptyTitle: {
-    ...TYPOGRAPHY.headingMd,
-    color: COLORS.green900,
+    fontFamily: TYPOGRAPHY.displaySm.fontFamily,
+    fontSize: 28,
+    color: COLORS.black,
     marginBottom: SPACING.sm,
   },
   emptyText: {
     ...TYPOGRAPHY.bodyMd,
-    color: COLORS.gray400,
+    color: COLORS.midGray,
     textAlign: 'center',
   },
 });
