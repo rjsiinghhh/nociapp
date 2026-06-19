@@ -10,14 +10,14 @@ SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [fontsLoaded] = useFonts({
-    // SK Glypher — drop the .ttf file at assets/fonts/SKGlypher.ttf
-    'SKGlypher': require('./assets/fonts/SKGlypher.ttf'),
+    'SKGlypher-Regular': require('./assets/fonts/SKGlypher-Regular.ttf'),
+    'SKGlypher-Medium':  require('./assets/fonts/SKGlypher-Medium.ttf'),
+    'SKGlypher-Bold':    require('./assets/fonts/SKGlypher-Bold.ttf'),
+    'SKGlypher-Heavy':   require('./assets/fonts/SKGlypher-Heavy.ttf'),
   });
 
   useEffect(() => {
-    if (fontsLoaded) {
-      SplashScreen.hideAsync();
-    }
+    if (fontsLoaded) SplashScreen.hideAsync();
   }, [fontsLoaded]);
 
   if (!fontsLoaded) return null;

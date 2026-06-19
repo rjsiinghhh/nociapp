@@ -1,14 +1,14 @@
-// Caveat Bold is the hand-drawn display font matching noci.farm's visual identity.
-// Used only for hero headings and the brand name — body text stays on system fonts.
-export const FONT_DISPLAY = 'SKGlypher';
+export const FONT_DISPLAY = 'SKGlypher-Bold';
+export const FONT_DISPLAY_HEAVY = 'SKGlypher-Heavy';
+export const FONT_DISPLAY_REGULAR = 'SKGlypher-Regular';
 
 export const TYPOGRAPHY = {
-  // Display: Caveat hand-drawn font — mirrors noci.farm headline style
-  displayLg: { fontSize: 48, fontFamily: FONT_DISPLAY, lineHeight: 54 },
-  displayMd: { fontSize: 38, fontFamily: FONT_DISPLAY, lineHeight: 44 },
-  displaySm: { fontSize: 28, fontFamily: FONT_DISPLAY, lineHeight: 34 },
+  // SK Glypher Heavy — wordmark, hero headlines (matches noci.farm biggest text)
+  displayLg: { fontSize: 48, fontFamily: 'SKGlypher-Heavy', lineHeight: 54 },
+  displayMd: { fontSize: 38, fontFamily: 'SKGlypher-Heavy', lineHeight: 44 },
+  displaySm: { fontSize: 28, fontFamily: 'SKGlypher-Bold',  lineHeight: 34 },
 
-  // Headings: system bold, clean
+  // System font headings — labels, section titles, card titles
   headingLg: { fontSize: 22, fontWeight: '700' as const, lineHeight: 28 },
   headingMd: { fontSize: 18, fontWeight: '600' as const, lineHeight: 24 },
   headingSm: { fontSize: 16, fontWeight: '600' as const, lineHeight: 22 },
