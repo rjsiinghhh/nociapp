@@ -1,6 +1,6 @@
 // Caveat Bold is the hand-drawn display font matching noci.farm's visual identity.
 // Used only for hero headings and the brand name — body text stays on system fonts.
-export const FONT_DISPLAY = 'Caveat-Bold';
+export const FONT_DISPLAY = 'SKGlypher';
 
 export const TYPOGRAPHY = {
   // Display: Caveat hand-drawn font — mirrors noci.farm headline style
